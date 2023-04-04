@@ -1,7 +1,11 @@
+import pytest
+
 from page.page_in import Page_in
 from page.page_login import Page_login
 import time
 from base.get_driver import DriverUtil
+from tool.read_yaml import read_yaml
+
 
 class Testlogin():
     """业务层"""
@@ -13,7 +17,8 @@ class Testlogin():
 
     def teardown(self):
         DriverUtil.quit_driver()
-    def testlogin(self, username="15606292280", passwd="a1234567"):
+    @pytest.mark.parametrize("username,passwd",read_yaml("login.yaml"))
+    def testlogin(self, username,passwd):
     #调用登录方法
         self.login.page_login(username,passwd)
         if self.login.page_check_element_exist():
